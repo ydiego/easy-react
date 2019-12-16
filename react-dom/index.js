@@ -1,14 +1,62 @@
+import Component from "../react/component"
+
 const ReactDom = {
     render
 }
 
 function render(vnode, container) {
-    console.log(vnode)
-    if (vnode === undefined) return 
+    return container.appendChild(_render(vnode))
+}
 
+function createComponent(comp, props) {
+    let inst
+    if (comp.prototype && comp.prototype.render) {
+        // 类组件 创建实例返回
+        inst = new comp(props)
+    } else {
+        // 函数组件 转成类组件
+        
+        inst = new Component(props)
+        inst.constructor = comp
+        inst.render = function() {
+            return this.constructor(props)
+        }
+    }
+
+    return inst
+}
+
+function setComponentProps(comp, props) {
+    comp.props = props
+    renderComponent(comp)
+}
+
+function renderComponent(comp) {
+    let base
+    const renderer = comp.render() // jsx
+    base = _render(renderer)
+    
+    comp.base = base
+}
+
+function _render(vnode) {
+    if (vnode === undefined 
+        || vnode === null 
+        || typeof vnode === 'boolean'
+    ) {
+        vnode = ''
+    }
+
+    // 字符串节点
     if (typeof vnode === 'string') {
-        const text = document.createTextNode(vnode)
-        return container.appendChild(text)
+        return document.createTextNode(vnode)
+    }
+    
+    if (typeof vnode.tag === 'function') {
+        const comp = createComponent(vnode.tag, vnode.attrs)
+       
+        setComponentProps(comp, vnode.attrs)
+        return comp.base
     }
 
     const {tag, attrs, childrens} = vnode
@@ -21,7 +69,7 @@ function render(vnode, container) {
     }
     childrens.forEach(child => render(child, dom))
     
-    return container.appendChild(dom)
+    return dom
 }
 
 // 属性设置
