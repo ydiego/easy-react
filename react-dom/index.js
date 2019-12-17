@@ -27,15 +27,40 @@ function createComponent(comp, props) {
 }
 
 function setComponentProps(comp, props) {
+    if(!comp.base) {
+        // life cycle componentWillMount
+        if (comp.componentWillMount) comp.componentWillMount()
+    } else if(comp.componentWillReceiveProps){
+         // life cycle componentWillReceiveProps
+        comp.componentWillReceiveProps() 
+    }
     comp.props = props
     renderComponent(comp)
 }
 
-function renderComponent(comp) {
+export function renderComponent(comp) {
     let base
     const renderer = comp.render() // jsx
     base = _render(renderer)
     
+    if (comp.base) {
+        // life cycle componentWillUpdate
+        if (comp.componentWillUpdate) {
+            comp.componentWillUpdate()
+        }
+        // life cycle componentDidUpdate
+        if (comp.componentDidUpdate) {
+            comp.componentDidUpdate()
+        }
+
+        // replace node
+        if(comp.base.parentNode) {
+            comp.base.parentNode.replaceChild(base, comp.base)
+        }
+
+    } else if (comp.componentDidMount) {
+        comp.componentDidMount()
+    }
     comp.base = base
 }
 
@@ -47,11 +72,15 @@ function _render(vnode) {
         vnode = ''
     }
 
+    if (typeof vnode === 'number') {
+        vnode = String(vnode)
+    }
+    
     // 字符串节点
     if (typeof vnode === 'string') {
         return document.createTextNode(vnode)
     }
-    
+
     if (typeof vnode.tag === 'function') {
         const comp = createComponent(vnode.tag, vnode.attrs)
        
@@ -67,7 +96,7 @@ function _render(vnode) {
             setAttribute(dom, key, value)
         })
     }
-    childrens.forEach(child => render(child, dom))
+    childrens && childrens.forEach(child => render(child, dom))
     
     return dom
 }

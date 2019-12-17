@@ -16,14 +16,39 @@ import ReactDom from './react-dom'
 class App extends React.Component{
     constructor(props) {
         super(props)
-        this.state = {}
+        this.state = {
+            title: 'title',
+            num: 1
+        }
+    }
+    componentWillReceiveProps(props) {
+        console.log('receive props:' + props)
+    }
+    componentWillMount() {
+        console.log('will mount')
+    }
+    componentWillUpdate() {
+        console.log('will mount')
+    }
+    componentDidUpdate() {
+        console.log('did update')
+    }
+    componentDidMount() {
+        console.log('did mount')
+    }
+
+    handleClick (){
+        this.setState({
+            num: this.state.num + 1
+        })
     }
     render() {
         return (
             <div className="title" style={{marginTop: '10rem'}}>
-                <h2>{this.props.title}</h2>
+                <h2>{this.state.title}, {this.state.num}</h2>
                 <h3>body
                     <div>content</div>
+                    <button onClick={this.handleClick.bind(this)}>click</button>
                 </h3>
             </div>
         )
