@@ -35,6 +35,17 @@ class App extends React.Component{
     }
     componentDidMount() {
         console.log('did mount')
+        for(let i = 0; i < 10; i++) {
+            // this.setState({
+            //     num: this.state.num + 1
+            // })
+            this.setState((prevState) => {
+               return {
+                    num: this.state.num + 1
+                }
+            })
+            console.log(this.state.num)
+        }
     }
 
     handleClick (){

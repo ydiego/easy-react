@@ -1,4 +1,4 @@
-import {renderComponent} from '../react-dom'
+import {setStateQueue} from "./setState";
 class Component {
     constructor(props = {}) {
         this.props = props
@@ -6,8 +6,9 @@ class Component {
     }
 
     setState(state) {
-        Object.assign(this.state, state)
-        renderComponent(this)
+        // Object.assign(this.state, state)
+        // renderComponent(this)
+        setStateQueue(state, this)
     }
 }
 export default Component
