@@ -44,6 +44,31 @@ function flush() {
     let item = queue.shift(),
         comp = componentRenderQueue.shift()
 
+
+    /**
+     ...
+     this.state = {
+         num : 0
+     }
+     ... 
+     // render result num is 10
+     for(let i = 0; i < 10; i++) {
+         this.steState((prevState) => {
+            return {
+                num: prevState + 1
+            }
+         })
+     }
+
+     // render result num is 1
+     for(let i = 0; i < 10; i++) {
+         this.steState(() => {
+            return {
+                num: this.state.num + 1
+            }
+         })
+     }
+     */
     const updater = {}
 
     while(item) {
