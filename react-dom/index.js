@@ -13,10 +13,10 @@ function render(vnode, container) {
 export function createComponent(comp, props) {
     let inst
     if (comp.prototype && comp.prototype.render) {
-        // 类组件 创建实例返回
+        // create class component instance and return
         inst = new comp(props)
     } else {
-        // 函数组件 转成类组件
+        // transform functional component to class component
         
         inst = new Component(props)
         inst.constructor = comp
@@ -77,8 +77,7 @@ function _render(vnode) {
     if (typeof vnode === 'number') {
         vnode = String(vnode)
     }
-    
-    // 字符串节点
+
     if (typeof vnode === 'string') {
         return document.createTextNode(vnode)
     }
@@ -103,7 +102,6 @@ function _render(vnode) {
     return dom
 }
 
-// 属性设置
 export function setAttribute(dom, key, value) {
     if( key === 'className') {
         key = 'class'

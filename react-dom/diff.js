@@ -39,12 +39,10 @@ function diffNode(dom, vnode) {
         return diffComponent(out, vnode)
     }
 
-    // 非dom节点
     if (!dom) {
         out = document.createElement(vnode.tag)
     }
 
-    // 比较子节点
     if (vnode.childrens && vnode.childrens.length ||
          (out.childNodes && out.childNodes.length)) {
         diffChildren(out, vnode.childrens)
@@ -57,17 +55,16 @@ function diffNode(dom, vnode) {
 
 function diffComponent(dom, vnode) {
     let comp = dom
-    // 如果组件没有变化 重新设置props
+    // reset the props if the component does not change
     if(comp && comp.constructor === vnode.tag) {
         setComponentProps(comp, vnode.attrs)
         dom = comp.base
     } else {
         if (comp) {
-            // 移除旧组件
+            // remove old component
             unmountComponent(comp)
-            comp = null
         }
-        // 创建新组件  设置属性 挂载
+        //create new component, set props and mount
         comp = createComponent(vnode.tag, vnode.attrs)
 
         setComponentProps(comp, vnode.attrs)
@@ -87,20 +84,17 @@ function removeNode(dom) {
     }
 }
 
-// 对比属性
 function diffAttribute(dom, vnode) {
-    // 记录原有属性
+
     const oldAttrs = {}
     const newAttrs = vnode.attrs
-    // dom为原有节点对象 vnode为虚拟dom
     const domAttrs = dom.attributes
     Array.prototype.slice.call(domAttrs).forEach(item => {
         let name = item.name
         if(item.name === 'class') name = 'className'
         oldAttrs[name] = item.value
     });
-   
-    // 对比原有属性跟新属性 移除不在新属性中的属性
+
     for(let key in oldAttrs) {
         if(!(key in newAttrs)) {
             setAttribute(dom, key, undefined)
@@ -109,7 +103,7 @@ function diffAttribute(dom, vnode) {
     
     for(let key in newAttrs) {
         if (oldAttrs[key] !== newAttrs[key]) {
-            // 属性值发生变化
+            // if attribute value has change
             setAttribute(dom, key, newAttrs[key])
         }
     }
@@ -119,16 +113,14 @@ function diffAttribute(dom, vnode) {
 function diffChildren(dom, vChildren) {
     const domChildren = dom.childNodes
     const children = []
-    const keyed = {} // 节点是否带key
+    const keyed = {} // todo
 
     if (domChildren.length) {
-        // return domChildren
         for(let i = 0;i<domChildren.length;i++) {
             children.push(domChildren[i])
         }
     }
 
-    // return
     if(vChildren && vChildren.length) {
         let min = 0
         let childrenLen = children.length
@@ -136,12 +128,9 @@ function diffChildren(dom, vChildren) {
             const key = vchild.key
             let child
             if (key) {
-                if(keyed[key]) {
-                    child = keyed[key]
-                    keyed[key] = undefined
-                }
+                // todo
             } else if(childrenLen > min){
-                // 如果没有key 优先查找类型相同的节点
+
                 for(let j = min; j< childrenLen;j ++) {
                     let c = children[j]
                     if(c) {
