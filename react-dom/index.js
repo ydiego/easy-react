@@ -5,9 +5,9 @@ const ReactDom = {
     render
 }
 
-function render(vnode, container, dom) {
-    return diff(dom, vnode, container)
-    // return container.appendChild(_render(vnode))
+function render(vnode, container) {
+    // return diff(dom, vnode, container)
+    return container.appendChild(_render(vnode))
 }
 
 export function createComponent(comp, props) {
@@ -45,7 +45,6 @@ export function renderComponent(comp) {
     const renderer = comp.render() // jsx
     // base = _render(renderer)
     base = diff(comp.base, renderer)
-    console.log(base)
     if (comp.base) {
         // life cycle componentWillUpdate
         if (comp.componentWillUpdate) {
@@ -117,6 +116,7 @@ export function setAttribute(dom, key, value) {
         if (!value || typeof value === 'string') {
             dom.style.cssText = value || ''
         } else if (value && typeof value === 'object') {
+            dom.removeAttribute(key)
             for (let k in value) {
                 if (typeof value[k] === 'number') {
                     dom.style[k] = value[k] + 'px'

@@ -5,13 +5,7 @@ import {
 } from './index'
 
 export function diff(dom, vnode, container) {
-    const ret = diffNode(dom, vnode)
-    console.log(ret);
-    
-    if (container) {
-        container.appendChild(ret)
-    }
-    return ret
+    return diffNode(dom, vnode)
 }
 
 function diffNode(dom, vnode) {
@@ -101,7 +95,9 @@ function diffAttribute(dom, vnode) {
     // dom为原有节点对象 vnode为虚拟dom
     const domAttrs = dom.attributes
     Array.prototype.slice.call(domAttrs).forEach(item => {
-        oldAttrs[item.name] = item.value
+        let name = item.name
+        if(item.name === 'class') name = 'className'
+        oldAttrs[name] = item.value
     });
    
     // 对比原有属性跟新属性 移除不在新属性中的属性

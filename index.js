@@ -28,7 +28,8 @@ class App extends React.Component{
         super(props)
         this.state = {
             title: 'title',
-            num: 0
+            num: 0,
+            style: {marginTop: '10rem'}
         }
     }
     componentWillReceiveProps(props) {
@@ -68,13 +69,16 @@ class App extends React.Component{
 
     handleClick (){
         this.setState({
-            num: this.state.num + 1
+            num: this.state.num + 1,
+            style: {
+                marginLeft: '1rem'
+            }
         })
     }
     render() {
-        const {title, num} = this.state
+        const {title, num, style} = this.state
         return (
-            <div className={title} style={{marginTop: '10rem'}}>
+            <div className={title} style={style}>
                 <div className='h2'>{title}, {num}</div>
                 <h3>body
                     <div>content</div>
