@@ -5,10 +5,14 @@ const React = {
 }
 
 function createElement(tag, attrs, ...childrens) {
+    let key = null
+    if(attrs && attrs.key) key = attrs.key
+
     return {
         tag,
         attrs,
-        childrens
+        childrens,
+        key: key
     }
 }
 

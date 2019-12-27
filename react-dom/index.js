@@ -1,14 +1,16 @@
 import Component from "../react/component"
+import {diff} from './diff'
 
 const ReactDom = {
     render
 }
 
-function render(vnode, container) {
-    return container.appendChild(_render(vnode))
+function render(vnode, container, dom) {
+    return diff(dom, vnode, container)
+    // return container.appendChild(_render(vnode))
 }
 
-function createComponent(comp, props) {
+export function createComponent(comp, props) {
     let inst
     if (comp.prototype && comp.prototype.render) {
         // 类组件 创建实例返回
@@ -26,7 +28,7 @@ function createComponent(comp, props) {
     return inst
 }
 
-function setComponentProps(comp, props) {
+export function setComponentProps(comp, props) {
     if(!comp.base) {
         // life cycle componentWillMount
         if (comp.componentWillMount) comp.componentWillMount()
@@ -41,8 +43,9 @@ function setComponentProps(comp, props) {
 export function renderComponent(comp) {
     let base
     const renderer = comp.render() // jsx
-    base = _render(renderer)
-    
+    // base = _render(renderer)
+    base = diff(comp.base, renderer)
+    console.log(base)
     if (comp.base) {
         // life cycle componentWillUpdate
         if (comp.componentWillUpdate) {
@@ -54,9 +57,9 @@ export function renderComponent(comp) {
         }
 
         // replace node
-        if(comp.base.parentNode) {
-            comp.base.parentNode.replaceChild(base, comp.base)
-        }
+        // if(comp.base.parentNode) {
+        //     comp.base.parentNode.replaceChild(base, comp.base)
+        // }
 
     } else if (comp.componentDidMount) {
         comp.componentDidMount()
@@ -102,7 +105,7 @@ function _render(vnode) {
 }
 
 // 属性设置
-function setAttribute(dom, key, value) {
+export function setAttribute(dom, key, value) {
     if( key === 'className') {
         key = 'class'
     }

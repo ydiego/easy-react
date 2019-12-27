@@ -11,6 +11,16 @@ import ReactDom from './react-dom'
 //         </div>
 //     )
 // }
+
+const el = (
+    <div className="title" style={{marginTop: '10rem'}}>
+        <h2>title</h2>
+        <h3>body
+            <div>content</div>
+        </h3>
+    </div>
+)
+
 // console.log(<App title='123'/>);
 
 class App extends React.Component{
@@ -18,7 +28,7 @@ class App extends React.Component{
         super(props)
         this.state = {
             title: 'title',
-            num: 1
+            num: 0
         }
     }
     componentWillReceiveProps(props) {
@@ -36,14 +46,22 @@ class App extends React.Component{
     componentDidMount() {
         console.log('did mount')
         for(let i = 0; i < 10; i++) {
+            // render num = 1
             // this.setState({
             //     num: this.state.num + 1
             // })
-            this.setState((prevState) => {
+            // render num = 1
+            this.setState(() => {
                return {
                     num: this.state.num + 1
                 }
             })
+            // render num = 10
+            // this.setState((prevState) => {
+            //     return {
+            //         num: prevState.num + 1
+            //     }
+            // })
             console.log(this.state.num)
         }
     }
@@ -54,9 +72,10 @@ class App extends React.Component{
         })
     }
     render() {
+        const {title, num} = this.state
         return (
-            <div className="title" style={{marginTop: '10rem'}}>
-                <h2>{this.state.title}, {this.state.num}</h2>
+            <div className={title} style={{marginTop: '10rem'}}>
+                <div className='h2'>{title}, {num}</div>
                 <h3>body
                     <div>content</div>
                     <button onClick={this.handleClick.bind(this)}>click</button>
@@ -67,4 +86,5 @@ class App extends React.Component{
 }
 
 
-ReactDom.render(<App title='react'/>, document.getElementById('app'))
+// ReactDom.render(el, document.getElementById('app'))
+ReactDom.render(<App title='easy react' />, document.getElementById('app'))
