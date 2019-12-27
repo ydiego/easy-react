@@ -53,9 +53,10 @@ class App extends React.Component{
         })
     }
     render() {
+        const {title, num} = this.state
         return (
-            <div className="title" style={{marginTop: '10rem'}}>
-                <div key={1} className='h2'>{this.state.title}, {this.state.num}</div>
+            <div className={title} style={{marginTop: '10rem'}}>
+                <div className='h2'>{title}, {num}</div>
                 <h3>body
                     <div>content</div>
                     <button onClick={this.handleClick.bind(this)}>click</button>

@@ -127,7 +127,12 @@ function diffChildren(dom, vChildren) {
 
     if (domChildren.length) {
         // return domChildren
+        for(let i = 0;i<domChildren.length;i++) {
+            children.push(domChildren[i])
+        }
     }
+
+    // return
     if(vChildren && vChildren.length) {
         let min = 0
         let childrenLen = children.length
@@ -160,9 +165,6 @@ function diffChildren(dom, vChildren) {
 
             if (child && child !== dom && child !== f) {
                 if (!f) {
-                    console.log(22);
-                    console.log(child);
-                    
                     dom.appendChild(child)
                 } else if( child === f.nextSibling) {
                     removeNode(f)
