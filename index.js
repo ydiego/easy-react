@@ -1,5 +1,6 @@
-import React from './react/index'
-import ReactDom from './react-dom'
+import React from 'react'
+import ReactDom from 'react-dom'
+import {HashRouter, Route, Link, Redirect, Switch} from './react-router'
 
 // function App({title}){
 //    return (
@@ -89,6 +90,41 @@ class App extends React.Component{
     }
 }
 
+function Home(props) {
+  console.log(props)
+  return <div>home</div>
+}
+function Page1() {
+    return <div>page1</div>
+}
+function Page2() {
+    return <div>page2</div>
+}
+
+
+class Root extends React.Component {
+    constructor(props) {
+        super(props)
+    }
+    render() {
+        return (
+            <HashRouter>
+                <Link to={'/home'}>home </Link>
+                <Link to={'/page1'}>page1 </Link>
+                <Link to={'/page2'}>page2 </Link>
+                <Switch>
+                  <Route path={'/home'} component={Home} exact={true} />
+                  <Route path={'/home/:id'} component={Home} exact={true} />
+                  <Route path={'/page1'} component={Page1} />
+                  <Route path={'/page2'} component={Page2} />
+                  <Redirect to={'/home'}  />
+                </Switch>
+            </HashRouter>
+        )
+    }
+}
+
 
 // ReactDom.render(el, document.getElementById('app'))
-ReactDom.render(<App title='easy react' />, document.getElementById('app'))
+// ReactDom.render(<App title='easy react' />, document.getElementById('app'))
+ReactDom.render(<Root title='easy react' />, document.getElementById('app'))

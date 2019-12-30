@@ -3,3 +3,4 @@
 .idea
 .vscode
 /dist
+package-lock.json

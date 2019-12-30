@@ -3,6 +3,7 @@
     "plugins": [
         ["transform-react-jsx", {
             "prama": "React.createElement"
-        }]
+        }],
+        ["transform-object-rest-spread"]
     ]
 }
